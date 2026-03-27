@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>הסרטים הכי אוברייטד - סקר קבוצת מדברים קולנוע</title>
+    <meta name="description" content="165 סרטים שחברי קבוצת מדברים קולנוע חושבים שהם אוברייטד - מדורגים לפי מספר אזכורים">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;800;900&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Heebo', sans-serif;
+            background: #0a0a0f;
+            color: #e8e6e3;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #1a0a2e 0%, #16213e 50%, #0f3460 100%);
+            padding: 3rem 1.5rem 2.5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 30% 50%, rgba(233, 69, 96, 0.15) 0%, transparent 60%),
+                        radial-gradient(circle at 70% 30%, rgba(52, 152, 219, 0.12) 0%, transparent 50%);
+        }
+
+        .hero > * { position: relative; z-index: 1; }
+
+        .hero h1 {
+            font-size: clamp(1.8rem, 5vw, 3rem);
+            font-weight: 900;
+            background: linear-gradient(135deg, #e94560, #f5a623, #e94560);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 4s ease-in-out infinite;
+            margin-bottom: 0.5rem;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { background-position: 0% center; }
+            50% { background-position: 200% center; }
+        }
+
+        .hero .subtitle {
+            font-size: 1.1rem;
+            color: #8899aa;
+            font-weight: 300;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat .num {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #e94560;
+        }
+
+        .stat .label {
+            font-size: 0.8rem;
+            color: #667788;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .about {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+            text-align: center;
+        }
+
+        .about p {
+            color: #8899aa;
+            font-size: 0.95rem;
+            line-height: 1.8;
+        }
+
+        .about a {
+            color: #e94560;
+            text-decoration: none;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 1.5rem 3rem;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #f5a623;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(245, 166, 35, 0.2);
+        }
+
+        .movie-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .movie-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.7rem 1rem;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.03);
+            transition: background 0.2s;
+        }
+
+        .movie-item:hover {
+            background: rgba(255, 255, 255, 0.07);
+        }
+
+        .movie-item.top3 {
+            background: rgba(233, 69, 96, 0.08);
+            border: 1px solid rgba(233, 69, 96, 0.15);
+        }
+
+        .movie-item.top10 {
+            background: rgba(245, 166, 35, 0.05);
+            border: 1px solid rgba(245, 166, 35, 0.1);
+        }
+
+        .rank {
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: #556677;
+            min-width: 2rem;
+            text-align: center;
+        }
+
+        .top3 .rank { color: #e94560; font-size: 1.1rem; }
+        .top10 .rank { color: #f5a623; }
+
+        .bar-wrap {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .movie-name {
+            min-width: 200px;
+            font-weight: 400;
+            font-size: 0.95rem;
+        }
+
+        .top3 .movie-name { font-weight: 600; font-size: 1.05rem; }
+
+        .movie-name .en {
+            color: #556677;
+            font-size: 0.8rem;
+            margin-right: 0.3rem;
+        }
+
+        .bar-container {
+            flex: 1;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .bar {
+            height: 100%;
+            border-radius: 3px;
+            background: linear-gradient(90deg, #e94560, #f5a623);
+            transition: width 1s ease;
+        }
+
+        .count {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #e94560;
+            min-width: 1.5rem;
+            text-align: center;
+        }
+
+        .top3 .count { font-size: 1rem; }
+
+        .divider {
+            height: 1px;
+            background: rgba(255,255,255,0.05);
+            margin: 1.5rem 0;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            color: #445566;
+            font-size: 0.8rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        @media (max-width: 600px) {
+            .movie-name { min-width: 120px; font-size: 0.85rem; }
+            .movie-item { padding: 0.5rem 0.6rem; gap: 0.5rem; }
+            .bar-container { display: none; }
+            .stats-bar { gap: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <h1>הסרטים הכי אוברייטד</h1>
+        <p class="subtitle">
+            סקר לא רשמי מקבוצת "מדברים קולנוע" בפייסבוק
+            <br>
+            מרץ 2026
+        </p>
+        <div class="stats-bar">
+            <div class="stat">
+                <div class="num">300</div>
+                <div class="label">תגובות</div>
+            </div>
+            <div class="stat">
+                <div class="num">165</div>
+                <div class="label">סרטים</div>
+            </div>
+            <div class="stat">
+                <div class="num">403</div>
+                <div class="label">אזכורים</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="about">
+        <p>
+            מישהו שאל בקבוצת
+            <a href="https://www.facebook.com/groups/wealllovecinema/" target="_blank" rel="noopener">מדברים קולנוע</a>:
+            "תנו לי שם של סרט אחד שכולם מחשיבים ליצירת מופת ואתם מרגישים שהוא קצת אוברייטד."
+            <br><br>
+            הפוסט התפוצץ עם מאות תגובות. סוכן AI עבר על 300 תגובות, חילץ את שמות הסרטים, וספר כמה פעמים כל סרט הוזכר.
+            <br>
+            זו התוצאה.
+        </p>
+    </div>
+
+    <div class="container">
+        <div class="section-title">הדירוג המלא</div>
+        <div class="movie-list" id="movieList"></div>
+    </div>
+
+    <div class="footer">
+        נבנה עם Claude Code | הנתונים מבוססים על 300 תגובות מתוך ~580 בפוסט המקורי
+    </div>
+
+    <script>
+    const movies = [
+        { name: "ספרות זולה", en: "Pulp Fiction", count: 21 },
+        { name: "טיטאניק", en: "Titanic", count: 15 },
+        { name: "מועדון קרב", en: "Fight Club", count: 12 },
+        { name: "מטריקס", en: "The Matrix", count: 12 },
+        { name: "האזרח קיין", en: "Citizen Kane", count: 11 },
+        { name: "אווטאר", en: "Avatar", count: 10 },
+        { name: "אופנהיימר", en: "Oppenheimer", count: 10 },
+        { name: "ביג לבובסקי", en: "The Big Lebowski", count: 10 },
+        { name: "קרב רודף קרב", en: "Mad Max: Fury Road", count: 10 },
+        { name: "שר הטבעות", en: "The Lord of the Rings", count: 8 },
+        { name: "הכל בכל מקום בבת אחת", en: "Everything Everywhere All at Once", count: 7 },
+        { name: "2001 אודיסאה בחלל", en: "2001: A Space Odyssey", count: 7 },
+        { name: "פורסט גאמפ", en: "Forrest Gump", count: 6 },
+        { name: "אפוקליפסה עכשיו", en: "Apocalypse Now", count: 5 },
+        { name: "פרזיטים", en: "Parasite", count: 5 },
+        { name: "האביר האפל", en: "The Dark Knight", count: 5 },
+        { name: "חומות של תקווה", en: "The Shawshank Redemption", count: 5 },
+        { name: "הסנדק", en: "The Godfather", count: 5 },
+        { name: "הפצוע האנגלי", en: "The English Patient", count: 5 },
+        { name: "בין כוכבים", en: "Interstellar", count: 5 },
+        { name: "רקוויאם לחלום", en: "Requiem for a Dream", count: 4 },
+        { name: "קיל ביל", en: "Kill Bill", count: 4 },
+        { name: "ארץ קשוחה", en: "No Country for Old Men", count: 4 },
+        { name: "מלחמת הכוכבים", en: "Star Wars", count: 4 },
+        { name: "סרטי כריסטופר נולאן", en: "Christopher Nolan films", count: 4 },
+        { name: "כלבי אשמורת", en: "Reservoir Dogs", count: 4 },
+        { name: "התחלה", en: "Inception", count: 4 },
+        { name: "ג׳וקר", en: "Joker", count: 4 },
+        { name: "חולית", en: "Dune", count: 4 },
+        { name: "לה לה לנד", en: "La La Land", count: 3 },
+        { name: "גרין מייל", en: "The Green Mile", count: 3 },
+        { name: "פרויקט המכשפה מבלייר", en: "The Blair Witch Project", count: 3 },
+        { name: "מלהולנד דרייב", en: "Mulholland Drive", count: 3 },
+        { name: "סרטי טרנטינו", en: "Tarantino films", count: 3 },
+        { name: "להציל את טוראי ראיין", en: "Saving Private Ryan", count: 3 },
+        { name: "כשהארי פגש את סאלי", en: "When Harry Met Sally", count: 3 },
+        { name: "שמש נצחית בראש צלול", en: "Eternal Sunshine of the Spotless Mind", count: 3 },
+        { name: "אמריקן ביוטי", en: "American Beauty", count: 3 },
+        { name: "המופע של טרומן", en: "The Truman Show", count: 3 },
+        { name: "גלדיאטור", en: "Gladiator", count: 3 },
+        { name: "מגרש השדים", en: "The Exorcist", count: 3 },
+        { name: "חלף עם הרוח", en: "Gone with the Wind", count: 3 },
+        { name: "הזאב מוול סטריט", en: "The Wolf of Wall Street", count: 3 },
+        { name: "מהיר ועצבני", en: "Fast & Furious", count: 3 },
+        { name: "היו זמנים בהוליווד", en: "Once Upon a Time in Hollywood", count: 3 },
+        { name: "ממנטו", en: "Memento", count: 3 },
+        { name: "נהג מונית", en: "Taxi Driver", count: 3 },
+        { name: "בלייד ראנר", en: "Blade Runner", count: 3 },
+        { name: "אמריקן פסיכו", en: "American Psycho", count: 3 },
+        { name: "התפוז המכני", en: "A Clockwork Orange", count: 3 },
+        { name: "ג׳אנגו", en: "Django Unchained", count: 3 },
+        { name: "סרטי הבורקס", en: "Bourekas films", count: 3 },
+        { name: "מרטי סופרין", en: "Marty", count: 2 },
+        { name: "שאטר איילנד", en: "Shutter Island", count: 2 },
+        { name: "Whiplash", en: "", count: 2 },
+        { name: "ריג׳ינג בול / השור הזועם", en: "Raging Bull", count: 2 },
+        { name: "זה ייגמר בדם", en: "There Will Be Blood", count: 2 },
+        { name: "אור ירח", en: "Moonlight", count: 2 },
+        { name: "מסכנים שכמונו", en: "Poor Things", count: 2 },
+        { name: "סרטי סקורסזה", en: "Scorsese films", count: 2 },
+        { name: "סרטי מיכל בת אדם", en: "", count: 2 },
+        { name: "חבר ואח", en: "", count: 2 },
+        { name: "בלייד ראנר 2049", en: "Blade Runner 2049", count: 1 },
+        { name: "Zodiac", en: "", count: 1 },
+        { name: "סנאץ׳", en: "Snatch", count: 1 },
+        { name: "רוקנרול", en: "RocknRolla", count: 1 },
+        { name: "מלך הסלים", en: "Slumdog Millionaire", count: 1 },
+        { name: "Epic Fury", en: "", count: 1 },
+        { name: "היו זמנים באמריקה", en: "Once Upon a Time in America", count: 1 },
+        { name: "פארגו", en: "Fargo", count: 1 },
+        { name: "טננט", en: "Tenet", count: 1 },
+        { name: "הארי פוטר", en: "Harry Potter", count: 1 },
+        { name: "החוטאים", en: "The Departed", count: 1 },
+        { name: "הטוב הרע והמכוער", en: "The Good, the Bad and the Ugly", count: 1 },
+        { name: "סרטי דנזל וושינגטון", en: "Denzel Washington films", count: 1 },
+        { name: "קן הקוקייה", en: "One Flew Over the Cuckoo's Nest", count: 1 },
+        { name: "מופע האימים של רוקי", en: "The Rocky Horror Picture Show", count: 1 },
+        { name: "ראן", en: "Ran", count: 1 },
+        { name: "מלאכים בשמי ברלין", en: "Wings of Desire", count: 1 },
+        { name: "ורטיגו", en: "Vertigo", count: 1 },
+        { name: "הרומן שלי עם אנני", en: "Annie Hall", count: 1 },
+        { name: "טרילוגית האיש ללא שם", en: "Dollars Trilogy", count: 1 },
+        { name: "סרטי הגל החדש הצרפתיים", en: "French New Wave", count: 1 },
+        { name: "The Rock", en: "", count: 1 },
+        { name: "הנסיכה הקסומה", en: "Enchanted", count: 1 },
+        { name: "Sicario", en: "", count: 1 },
+        { name: "סיפורו של ויל האנטינג", en: "Good Will Hunting", count: 1 },
+        { name: "הכי טוב שיש", en: "As Good As It Gets", count: 1 },
+        { name: "לב אמיץ", en: "Braveheart", count: 1 },
+        { name: "לשחרר את שולי", en: "Free Willy", count: 1 },
+        { name: "Moonrise Kingdom", en: "", count: 1 },
+        { name: "12 שנים של עבדות", en: "12 Years a Slave", count: 1 },
+        { name: "מיליון דולר בייבי", en: "Million Dollar Baby", count: 1 },
+        { name: "חלום אמריקאי", en: "American History X", count: 1 },
+        { name: "שתיקת הכבשים", en: "The Silence of the Lambs", count: 1 },
+        { name: "החברה הטובים", en: "Goodfellas", count: 1 },
+        { name: "הלהקה", en: "The Band", count: 1 },
+        { name: "איש הגשם", en: "Rain Man", count: 1 },
+        { name: "בלאק הוק דאון", en: "Black Hawk Down", count: 1 },
+        { name: "אקספרס של חצות", en: "Midnight Express", count: 1 },
+        { name: "קפה בגדד", en: "Baghdad Cafe", count: 1 },
+        { name: "סינפונית החיים", en: "La Vie en Rose", count: 1 },
+        { name: "פנומן", en: "Phenomenon", count: 1 },
+        { name: "מיסיסיפי בוערת", en: "Mississippi Burning", count: 1 },
+        { name: "אחיות שובבות 2", en: "", count: 1 },
+        { name: "ריקוד מושחת", en: "Dirty Dancing", count: 1 },
+        { name: "צ׳יינטאון", en: "Chinatown", count: 1 },
+        { name: "ברבי", en: "Barbie", count: 1 },
+        { name: "סינמה פרדיסו", en: "Cinema Paradiso", count: 1 },
+        { name: "Passengers", en: "", count: 1 },
+        { name: "50 גוונים של אפור", en: "Fifty Shades of Grey", count: 1 },
+        { name: "אינסטינקט בסיסי", en: "Basic Instinct", count: 1 },
+        { name: "פני צלקת", en: "Scarface", count: 1 },
+        { name: "מבצע סבתא", en: "", count: 1 },
+        { name: "קורבן האהבה", en: "", count: 1 },
+        { name: "ראשומון", en: "Rashomon", count: 1 },
+        { name: "למי צלצלו הפעמונים", en: "For Whom the Bell Tolls", count: 1 },
+        { name: "סרטי זאב רווח ויהודה ברקן", en: "", count: 1 },
+        { name: "צ׳רלי וחצי", en: "", count: 1 },
+        { name: "טווין פיקס", en: "Twin Peaks", count: 1 },
+        { name: "ירח מר", en: "", count: 1 },
+        { name: "עיניים עצומות לרווחה", en: "Eyes Wide Shut", count: 1 },
+        { name: "הניצוץ", en: "The Shining", count: 1 },
+        { name: "אקסודוס", en: "Exodus", count: 1 },
+        { name: "סרטי מארוול", en: "Marvel films", count: 1 },
+        { name: "סרטי ג׳יימס קמרון", en: "James Cameron films", count: 1 },
+        { name: "אבא גנוב", en: "", count: 1 },
+        { name: "האיש שלא היה שם", en: "The Man Who Wasn't There", count: 1 },
+        { name: "קזבלנקה", en: "Casablanca", count: 1 },
+        { name: "בן חור", en: "Ben-Hur", count: 1 },
+        { name: "הטבעת", en: "The Ring", count: 1 },
+        { name: "מלך האריות", en: "The Lion King", count: 1 },
+        { name: "הממזרים חסרי כבוד", en: "Inglourious Basterds", count: 1 },
+        { name: "האדם השלישי", en: "The Third Man", count: 1 },
+        { name: "האיש שנולד מחדש", en: "The Revenant", count: 1 },
+        { name: "Easy Rider", en: "", count: 1 },
+        { name: "אדם בעקבות גורלו", en: "", count: 1 },
+        { name: "החוש השישי", en: "The Sixth Sense", count: 1 },
+        { name: "שם הורד", en: "The Name of the Rose", count: 1 },
+        { name: "רומא", en: "Roma", count: 1 },
+        { name: "דוני דארקו", en: "Donnie Darko", count: 1 },
+        { name: "תותחי נברון", en: "The Guns of Navarone", count: 1 },
+        { name: "זיכרון גורלי", en: "Total Recall", count: 1 },
+        { name: "טריינספוטינג", en: "Trainspotting", count: 1 },
+        { name: "הטרילוגיה של קישלובסקי", en: "Three Colours Trilogy", count: 1 },
+        { name: "שמונה וחצי", en: "8\u00BD", count: 1 },
+        { name: "יהושוע יהושוע", en: "", count: 1 },
+        { name: "החיים יפים", en: "La Vita \u00e8 Bella", count: 1 },
+        { name: "דוח מיוחד", en: "Minority Report", count: 1 },
+        { name: "רוצחים מלידה", en: "Natural Born Killers", count: 1 },
+        { name: "אישה יפה", en: "Pretty Woman", count: 1 },
+        { name: "ארגו", en: "Argo", count: 1 },
+        { name: "ציפורים", en: "The Birds", count: 1 },
+        { name: "ארץ נוודים", en: "Nomadland", count: 1 },
+        { name: "לאכול להתפלל לאהוב", en: "Eat Pray Love", count: 1 },
+        { name: "פרסיליה מלכת המדבר", en: "Priscilla, Queen of the Desert", count: 1 },
+        { name: "Blue Moon", en: "", count: 1 },
+    ];
+
+    const maxCount = movies[0].count;
+    const list = document.getElementById('movieList');
+
+    movies.forEach((movie, i) => {
+        const rank = i + 1;
+        let cls = 'movie-item';
+        if (rank <= 3) cls += ' top3';
+        else if (rank <= 10) cls += ' top10';
+
+        const barWidth = (movie.count / maxCount) * 100;
+        const enLabel = movie.en ? `<span class="en">${movie.en}</span>` : '';
+
+        list.innerHTML += `
+            <div class="${cls}">
+                <span class="rank">${rank}</span>
+                <div class="bar-wrap">
+                    <span class="movie-name">${movie.name} ${enLabel}</span>
+                    <div class="bar-container">
+                        <div class="bar" style="width: ${barWidth}%"></div>
+                    </div>
+                </div>
+                <span class="count">${movie.count}</span>
+            </div>
+        `;
+    });
+    </script>
+</body>
+</html>
