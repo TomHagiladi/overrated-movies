@@ -220,6 +220,57 @@
             border-top: 1px solid rgba(255,255,255,0.05);
         }
 
+        .about-card {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+            text-align: center;
+        }
+
+        .about-card .logo {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 1rem;
+            border: 2px solid rgba(233, 69, 96, 0.3);
+            transition: border-color 0.3s;
+        }
+
+        .about-card .logo:hover {
+            border-color: #e94560;
+        }
+
+        .about-card .story {
+            color: #99aabb;
+            font-size: 0.95rem;
+            line-height: 1.9;
+        }
+
+        .about-card .story a {
+            color: #e94560;
+            text-decoration: none;
+        }
+
+        .about-card .story a:hover {
+            text-decoration: underline;
+        }
+
+        .about-card .signature {
+            margin-top: 1.2rem;
+            font-size: 0.95rem;
+        }
+
+        .about-card .signature a {
+            color: #f5a623;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .about-card .signature a:hover {
+            text-decoration: underline;
+        }
+
         @media (max-width: 600px) {
             .movie-name { min-width: 120px; font-size: 0.85rem; }
             .movie-item { padding: 0.5rem 0.6rem; gap: 0.5rem; }
@@ -252,15 +303,29 @@
         </div>
     </div>
 
-    <div class="about">
-        <p>
-            מישהו שאל בקבוצת
-            <a href="https://www.facebook.com/groups/wealllovecinema/" target="_blank" rel="noopener">מדברים קולנוע</a>:
-            "תנו לי שם של סרט אחד שכולם מחשיבים ליצירת מופת ואתם מרגישים שהוא קצת אוברייטד."
-            <br><br>
-            הפוסט התפוצץ עם מאות תגובות. סוכן AI עבר על 300 תגובות, חילץ את שמות הסרטים, וספר כמה פעמים כל סרט הוזכר.
+    <div class="about-card">
+        <a href="https://linktr.ee/TomHagiladi" target="_blank" rel="noopener">
+            <img src="logo.png" alt="Tom Hagiladi" class="logo">
+        </a>
+        <p class="story">
+            ראיתי את
+            <a href="https://www.facebook.com/share/p/1CQumm7a9B/" target="_blank" rel="noopener">הפוסט הזה</a>
+            בקבוצת
+            <a href="https://www.facebook.com/groups/wealllovecinema/" target="_blank" rel="noopener">מדברים קולנוע</a>
+            וממש רציתי לדעת אילו סרטים הוזכרו הכי הרבה,
             <br>
-            זו התוצאה.
+            אבל היו שם מאות תגובות ומי יעבור על כולן?
+            <br>
+            אז אמרתי לעצמי &mdash; למה לא לשלוח את
+            <a href="https://claude.ai/code" target="_blank" rel="noopener">Claude Code</a>
+            לעשות את העבודה?
+            <br>
+            הוא פתח דפדפן, גלל את התגובות, חילץ את שמות הסרטים, וספר אותם.
+            <br><br>
+            אז בבקשה &mdash; כמעט כל הסרטים שהוזכרו שם. תהנו.
+        </p>
+        <p class="signature">
+            <a href="https://linktr.ee/TomHagiladi" target="_blank" rel="noopener">תום הגלעדי</a>
         </p>
     </div>
 
@@ -270,7 +335,11 @@
     </div>
 
     <div class="footer">
-        נבנה עם Claude Code | הנתונים מבוססים על 300 תגובות מתוך ~580 בפוסט המקורי
+        <a href="https://linktr.ee/TomHagiladi" target="_blank" rel="noopener" style="color: #556677;">תום הגלעדי</a>
+        &middot;
+        נבנה עם Claude Code
+        &middot;
+        300 תגובות מתוך ~580 בפוסט
     </div>
 
     <script>
